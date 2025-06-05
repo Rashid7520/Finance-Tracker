@@ -59,100 +59,85 @@ A **Personal Finance & Budget Management System** built in **C++** with a **MySQ
 ```bash
 git clone https://github.com/Rashid7520/Finance-Tracker.git
 cd Finance-Tracker
+```
 
-⚙️ Database Setup
+### ⚙️ Database Setup
 
-    Open MySQL:
+1. **Open MySQL**
+   ```bash
+   mysql -u root -p
+   ```
 
-mysql -u root -p
+2. **Create database and tables:**
+   ```bash
+   CREATE DATABASE finance;
+   USE finance;
 
-    Create database and tables:
+   CREATE TABLE users (
+       user_id INT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(50),
+       email VARCHAR(100) UNIQUE,
+       password VARCHAR(100)
+   );
 
-CREATE DATABASE finance;
-USE finance;
+   CREATE TABLE categories (
+       category_id INT AUTO_INCREMENT PRIMARY KEY,
+       name VARCHAR(50)
+   );
 
-CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50),
-    email VARCHAR(100) UNIQUE,
-    password VARCHAR(100)
-);
+   CREATE TABLE transactions (
+       txn_id INT AUTO_INCREMENT PRIMARY KEY,
+       user_id INT,
+       category_id INT,
+       amount DOUBLE,
+       type VARCHAR(20),
+       txn_date DATE,
+       description TEXT,
+       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+       FOREIGN KEY (user_id) REFERENCES users(user_id),
+       FOREIGN KEY (category_id) REFERENCES categories(category_id)
+   );
 
-CREATE TABLE categories (
-    category_id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50)
-);
+   CREATE TABLE budget (
+       budget_id INT AUTO_INCREMENT PRIMARY KEY,
+       user_id INT,
+       category_id INT,
+       month VARCHAR(7),
+       amount DOUBLE,
+       FOREIGN KEY (user_id) REFERENCES users(user_id),
+       FOREIGN KEY (category_id) REFERENCES categories(category_id)
+   );
+   
+   -- Insert sample categories
+   INSERT INTO categories(name) VALUES ('Food'), ('Transport'), ('Health'), ('Shopping'), ('Salary'), ('Bills');
+   ```
 
-CREATE TABLE transactions (
-    txn_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    category_id INT,
-    amount DOUBLE,
-    type VARCHAR(20),
-    txn_date DATE,
-    description TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
+3. **🧱 Build the Project**
 
-CREATE TABLE budget (
-    budget_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    category_id INT,
-    month VARCHAR(7),
-    amount DOUBLE,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (category_id) REFERENCES categories(category_id)
-);
+   ```bash
+   g++ main.cpp users.cpp transaction.cpp budget.cpp summary.cpp utils.cpp -o finance_tracker -lmysqlcppconn -lssl -lcrypto
+   ```
 
--- Insert sample categories
-INSERT INTO categories(name) VALUES ('Food'), ('Transport'), ('Health'), ('Shopping'), ('Salary'), ('Bills');
+4. **🏃 Run the App**
 
-🧱 Build the Project
-
-g++ main.cpp users.cpp transaction.cpp budget.cpp summary.cpp utils.cpp -o finance_tracker -lmysqlcppconn -lssl -lcrypto
-
-🏃 Run the App
-
-./finance_tracker
-
-📷 Sample Screens
-
--- USER LOGIN --
--- ADD TRANSACTION --
--- VIEW BUDGET --
--- MONTHLY SUMMARY --
+   ```bash
+   ./finance_tracker
+   ```
 
 🙌 Contribution
 
-Contributions, bug reports, and suggestions are welcome!
+### Contributions, bug reports, and suggestions are welcome!
 
-    Fork the repository
+**Fork the repository**
+**Create a new branch**
+**Commit your changes**
+**Push to your fork**
+**Open a Pull Request**
 
-    Create a new branch
+### 📧 Contact
 
-    Commit your changes
+Created by:- Rashid Khan
+Email: rashid7520@gmail.com
 
-    Push to your fork
-
-    Open a Pull Request
-
-📧 Contact
-
-    Created by Rashid Khan
-
-    Email: rashid7520@gmail.com
-
-    Made with ❤️ in C++
-
-
----
-
-Let me know if you want:
-
-- `.gitignore`  
-- `LICENSE` (MIT recommended)  
-- A shell script (`setup.sh`) to automate database setup and build  
-
-I can prepare those instantly too.
+### 🚀 Made with ❤️ in C++
+Let me know if you need any additional sections or modifications!
