@@ -6,7 +6,6 @@
 #include<cppconn/resultset.h>
 #include<ctime>
 #include "db.h"
-#include "utils.h"
 
 using namespace std;
 
