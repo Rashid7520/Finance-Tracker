@@ -124,6 +124,7 @@ cd Finance-Tracker
    ./finance_tracker
    ```
 
+---
 ### 🙌 Contribution
 
  **Contributions, bug reports, and suggestions are welcome!**
@@ -134,10 +135,13 @@ cd Finance-Tracker
 - **Push to your fork**
 - **Open a Pull Request**
 
+---
 ### 📧 Contact
 
-Created by:- Rashid Khan
-Email: rashid7520@gmail.com
+- Created by:- Rashid Khan
+- Email: mdrashid7520@gmail.com
 
+---
 ### 🚀 Made with ❤️ in C++
+
 Let me know if you need any additional sections or modifications!
