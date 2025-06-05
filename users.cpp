@@ -15,38 +15,37 @@ void registerUser()
     string name, email, password;
     int age;
 
-    cout<<"\n--USER REGISTRATION--\n";
-    cout<<"Name : ";
+    cout << "\n--USER REGISTRATION--\n";
+    cout << "Name : ";
     cin.ignore();
-    getline(cin,name);
-    cout<<"Email : ";
-    getline(cin,email);
-    cout<<"Age ";
-    cin>>age;
-    cout<<"Password : ";
+    getline(cin, name);
+    cout << "Email : ";
+    getline(cin, email);
+    cout << "Age : ";
+    cin >> age;
+    cout << "Password : ";
     cin.ignore();
-    getline(cin,password);
+    getline(cin, password);
 
     try {
         sql::Connection* con = getDBConnection();
 
-        //insert User
+        // Insert user with plain password
         sql::PreparedStatement* pstmt = con->prepareStatement(
-            "INSERT INTO Users(name, email, age, password, created_at) VALUES (?, ?, ?, ?, NOW())"
+            "INSERT INTO users(name, email, age, password, created_at) VALUES (?, ?, ?, ?, NOW())"
         );
         pstmt->setString(1, name);
         pstmt->setString(2, email);
         pstmt->setInt(3, age);
-        pstmt->setString(4, generateSaltedhash(password));
-        //pstmt->setString(4, password);
+        pstmt->setString(4, password);  // plain password stored
 
         pstmt->executeUpdate();
-        cout<<"User registered successfully"<<endl;
+        cout << "User registered successfully\n";
 
         delete pstmt;
         delete con;
     } catch (sql::SQLException &e) {
-        cerr <<"SQL Error: "<< e.what() << endl;
+        cerr << "SQL Error: " << e.what() << endl;
     }
 }
 
@@ -61,35 +60,30 @@ int loginUser()
     cout << "Enter Password: ";
     cin >> password;
 
-    string hashedPassword = generateSaltedhash(password);  // hash the entered password
-
     try {
         sql::Connection* con = getDBConnection();
         sql::PreparedStatement* pstmt = con->prepareStatement(
-            "SELECT * FROM users WHERE email = ? AND password = ?"
+            "SELECT user_id, name FROM users WHERE email = ? AND password = ?"
         );
         pstmt->setString(1, email);
+        pstmt->setString(2, password);  // plain password compared
+
         sql::ResultSet* rs = pstmt->executeQuery();
 
         if (rs->next()) {
-            string storedPassword = rs->getString("password");
-            if (storedPassword == hashedPassword) {
-                int user_id = rs->getInt("user_id");
-                cout << "Login successful!\n";
-                delete con;
-                delete pstmt;
-                delete rs;
-                return user_id;
-            } else {
-                cout << "Incorrect password.\n";
-            }
+            cout << "Login successful. Welcome " << rs->getString("name") << endl;
+            int user_id = rs->getInt("user_id");
+            delete rs;
+            delete pstmt;
+            delete con;
+            return user_id;  // return user id on success
         } else {
-            cout << "Username not found.\n";
+            cout << "Incorrect email or password.\n";
         }
 
-        delete con;
-        delete pstmt;
         delete rs;
+        delete pstmt;
+        delete con;
     }
     catch (sql::SQLException &e) {
         cerr << "SQL error: " << e.what() << endl;
@@ -97,4 +91,3 @@ int loginUser()
 
     return -1;  // login failed
 }
-

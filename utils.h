@@ -1,10 +1,12 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include<string>
-using namespace std;
+#include <string>
 
-string sha256(const string &input);
-string generateSaltedhash(const string& password);
+// Function to hash a string with SHA-256
+std::string sha256(const std::string &str);
+
+// Function to hash password with salt
+std::string generateSaltedhash(const std::string& password);
 
 #endif // UTILS_H

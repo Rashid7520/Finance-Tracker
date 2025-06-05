@@ -1,10 +1,12 @@
 #include "utils.h"
 #include "db.h"
 #include<iostream>
+#include<string>
 #include<openssl/sha.h>
 #include<sstream>
 #include<iomanip>
 #include<random>
+using namespace std;
 
 string sha256(const string &str)
 {

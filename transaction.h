@@ -4,5 +4,5 @@
 void addTransaction(int userID);
 void viewTransactions(int userID);
 
-#endif // TRANSACTION
+#endif // TRANSACTION_H
 
