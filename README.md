@@ -112,27 +112,27 @@ cd Finance-Tracker
    INSERT INTO categories(name) VALUES ('Food'), ('Transport'), ('Health'), ('Shopping'), ('Salary'), ('Bills');
    ```
 
-3. **🧱 Build the Project**
+### 🧱 Build the Project
 
    ```bash
    g++ main.cpp users.cpp transaction.cpp budget.cpp summary.cpp utils.cpp -o finance_tracker -lmysqlcppconn -lssl -lcrypto
    ```
 
-4. **🏃 Run the App**
+### 🏃 Run the App
 
    ```bash
    ./finance_tracker
    ```
 
-🙌 Contribution
+### 🙌 Contribution
 
-### Contributions, bug reports, and suggestions are welcome!
+ **Contributions, bug reports, and suggestions are welcome!**
 
-**Fork the repository**
-**Create a new branch**
-**Commit your changes**
-**Push to your fork**
-**Open a Pull Request**
+- **Fork the repository**
+- **Create a new branch**
+- **Commit your changes**
+- **Push to your fork**
+- **Open a Pull Request**
 
 ### 📧 Contact
 
