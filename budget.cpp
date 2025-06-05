@@ -1,0 +1,82 @@
+#include<iostream>
+#include<mysql_connection.h>
+#include<mysql_driver.h>
+#include<cppconn/statement.h>
+#include<iomanip>
+#include<cppconn/resultset.h>
+#include<cppconn/prepared_statement.h>
+#include "db.h"
+
+using namespace std;
+
+void addBudget(int user_id)
+{
+    int category_id;
+    string month;
+    double amount;
+
+    cout<<"\n--- Add Budget ---\n";
+    cout << "Enter Category ID: ";
+    cin >> category_id;
+    cout << "Enter Month(YYYY-MM): ";
+    cin >> month;
+    cout<<"Enter Amount: ";
+    cin>>amount;
+
+    try
+    {
+        sql::Connection *con =getDBConnection();
+        sql::PreparedStatement* pstmt = con->prepareStatement(
+            "INSERT INTO budget (user_id, category_id, month, amount) VALUES (?, ?, ?, ?)");
+        pstmt->setInt(1, user_id);
+        pstmt->setInt(2, category_id);
+        pstmt->setString(3, month);
+        pstmt->setDouble(4, amount);
+        pstmt->executeUpdate();
+        cout << "Budget added successfully.\n";
+    }
+    catch (sql::SQLException &e)
+    {
+        cout << "Error adding budget: " << e.what() << "\n";
+    }
+
+}
+
+void viewBudget(int user_id)
+{
+    cout<<"\n--- View Budget ---\n";
+    try
+    {
+        sql::Connection *con = getDBConnection();
+        sql::PreparedStatement* pstmt = con->prepareStatement(
+            "SELECT b.budget_id, c.name AS category_name, b.month, b.amount "
+            "FROM budget b "
+            "JOIN categories c ON b.category_id = c.category_id "
+            "WHERE b.user_id = ? "
+            "ORDER BY b.month ASC"
+        );
+
+        
+        pstmt->setInt(1, user_id);
+        sql::ResultSet* rs = pstmt->executeQuery();
+        while (rs->next())
+        {
+            int budget_id = rs->getInt("budget_id");
+            string category_name = rs->getString("category_name");
+            string month = rs->getString("month");
+            double amount = rs->getDouble("amount");
+            cout << "Budget ID: " << budget_id << ", Category: " << category_name
+                 << ", Month: " << month << ", Amount: $" << amount << "\n";
+        }
+
+        delete rs;
+        delete pstmt;
+        delete con;
+
+    }
+    catch (sql::SQLException &e)
+    {
+        cout << "Error viewing budget: " << e.what() << endl;
+    }
+
+}

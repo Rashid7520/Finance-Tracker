@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.html": "html",
+        "stdexcept": "cpp",
+        "iostream": "cpp",
+        "string": "cpp",
+        "iomanip": "cpp",
+        "ctime": "cpp"
+    }
+}
